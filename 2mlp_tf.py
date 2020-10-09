@@ -19,7 +19,7 @@ if __name__ == "__main__":
 	# print("x_test: \n {}".format(x_test))
 	# print("y_test: \n {}".format(y_test))
 
-	#build model 2--> 5 --> 1
+	#build neural network with tf: 2--> 5 --> 1
 	model = tf.keras.Sequential([
 		tf.keras.layers.Dense(5, input_dim=2, activation="sigmoid"), #fully connected NN
 		tf.keras.layers.Dense(1, activation="sigmoid") 
@@ -44,5 +44,7 @@ if __name__ == "__main__":
 	print("\nsome predictions: {}")
 	for d, p in zip(data, predictions):
 		print("\n {} + {} = {}". format(d[0], d[1], p[0]))
+
+
 
 
