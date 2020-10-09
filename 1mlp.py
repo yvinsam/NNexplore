@@ -1,3 +1,8 @@
+'''
+Code to implement MLP and operations from scratch
+@nsamudrala, Oct 2020
+
+'''
 import numpy as np
 from random import random
 
@@ -5,8 +10,8 @@ from random import random
 #DONE implement backpropagation
 #DONE implement gradient descent
 #DONE implement a trained method using backpropagation & gradient descent
-#train our network with some dummy dataset
-# make some predictions
+#DONE train our network with some dummy dataset
+#DONE make some predictions
  
 class MLP:
 	'''
@@ -16,11 +21,11 @@ class MLP:
 	def __init__(self, num_inputs = 3, num_hidden = [3, 5], num_outputs= 2):
 		#store the arguments internally
 		self.num_inputs = num_inputs #num of neurons in input layer
-		self.num_hidden = num_hidden #each elements represents the  
-		# of neurons in each hidden layer of the neural network 
+		self.num_hidden = num_hidden #each element represents the  
+		# of neurons in each hidden layer of the neural network; total layers = len(num_hidden)
 		self.num_outputs = num_outputs
 
-		#list with number of neurons in each layer; indexed from  [0, num of layers)
+		#list of layers with number of neurons in each layer; indexed from  [0, num of layers)
 		layers = [self.num_inputs] + self.num_hidden + [self.num_outputs]
 
 		#initiate random weights for the layers
@@ -75,7 +80,7 @@ class MLP:
 
 		# dE/ dW_i = (y - a[i+1]) s'(h[i+1])) a_i --> iterable definition
 		# s'(h_[i+1]) = s(h_[i+1]) (1- s(h_[i+1])) --> in terms of sigmoid
-		# s(h_[i+1]) = a_[i+1] --> 
+		# s(h_[i+1]) = a_[i+1] --> sigmoid is basically the activation
 
 		#dE/ dW_[i-1] = (y - a[i+1]) s'(h[i+1])) W_i s'(h_i) a_[i-1] 
 
