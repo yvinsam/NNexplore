@@ -1,3 +1,10 @@
+'''
+This is tensorflow implementation of a simple neural net 
+to run some arithmetic ops
+
+@nsamudrala, Oct 2020
+
+'''
 import numpy as np
 from random import random
 import tensorflow as tf #nb: this is cpu not gpu
