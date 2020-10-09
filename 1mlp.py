@@ -1,10 +1,10 @@
 import numpy as np
 
-#save activations and derivatives
+#DONE: save activations and derivatives
 #implement backpropagation
 #implement gradient descent
-#implement train using backpropagation & gradient descent
-#train our net with some dummy dataset
+#implement a trained method using backpropagation & gradient descent
+#train our network with some dummy dataset
 # make some predictions
  
 class MLP:
@@ -41,7 +41,7 @@ class MLP:
 		self.activations = activations
 
 		derivatives = []
-		#derivatives are derivatives of E wrt weights; so layers - 1 
+		#derivatives are derivatives of E wrt weights; layers -1 
 		for i in range(len(layers)-1):
 			d = np.zeros((layers[i], layers[i+1]))
 			derivatives.append(d) 
@@ -63,31 +63,79 @@ class MLP:
 			activations = self._sigmoid(net_inputs)
 			self.activations[i+1] = activations
 
-		#a_3 = s(h_3)
-		#h_3 = A_2 * W_2
+		#Indexing explanation
+		#a_3 = sigmoid(h_3) wherein,
+		##h_3 is given by A_2 * W_2 i.e. from previous layer
 
 		return activations
+
+
+	def back_propagate(self, error, verbose=False):
+
+		# dE/ dW_i = (y - a[i+1]) s'(h[i+1])) a_i --> iterable definition
+		# s'(h_[i+1]) = s(h_[i+1]) (1- s(h_[i+1])) --> in terms of sigmoid
+		# s(h_[i+1]) = a_[i+1] --> 
+
+		#dE/ dW_[i-1] = (y - a[i+1]) s'(h[i+1])) W_i s'(h_i) a_[i-1] 
+
+		#move from right to left from output to inputs; reverse index
+		for i in reversed(range(len(self.derivatives))):
+			activations = self.activations[i+1]
+			delta = error * self._sigmoid_derivative(activations)
+			current_activations = self.activations[i] #ndarray([0.1, 0.2]) --> vertical vector([0.1], [0.2])
+
+			#need to rearrange arrays in vertical format for dot product to work correctly
+			current_activations_reshaped = current_activations.reshape(current_activations.shape[0], -1)
+			delta_reshaped = delta.reshape(delta.shape[0], -1).T
+
+			self.derivatives[i] = np.dot(current_activations_reshaped, delta_reshaped)
+			
+			error = np.dot(delta, self.weights[i].T)
+
+			if verbose:
+				print("Derivatives for W{}: {} ".format(i, self.derivatives[i]))
+
+		return error
+
+
+
+	def _sigmoid_derivative(self, x):
+		y = x*(1.0 - x)
+		return y
+
 
 	def _sigmoid(self,x):
 		y  = 1.0 /(1.0 + np.exp(-x))
 		return y
+
 
 #main driver 
 if __name__ == "__main__":
 
 
 	#create an MLP using default values
-	mlp = MLP()
+	mlp = MLP(2,[5],1)
 
-	#create some inputs
-	inputs = np.random.rand(mlp.num_inputs)
+	#create some dummy inputs
+	input = np.array([0.1, 0.2])
+	target = np.array([0.3]) #sum of the above - let's see if n/w can learn sum operation
+	#inputs = np.random.rand(mlp.num_inputs)
 
-	#perform forward propagation
-	outputs = mlp.forward_propagate(inputs)
+	#forward propagation
+	#outputs = mlp.forward_propagate(inputs)
+	output = mlp.forward_propagate(input) #rather the prediction
+
+	#calculate the error
+	error = target - output
+
+	#back_propagation
+	mlp.back_propagate(error, verbose=True)
+
 
 	#print the results
-	print("The network intput is {}".format(inputs))
-	print("The network output is {}".format(outputs))
+	#print("The network intput is {}".format(inputs))
+	#print("The network output is {}".format(outputs))
+	#print("")
 
 
 
