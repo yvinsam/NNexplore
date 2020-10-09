@@ -1,9 +1,10 @@
 import numpy as np
+from random import random
 
 #DONE: save activations and derivatives
 #DONE implement backpropagation
 #DONE implement gradient descent
-#implement a trained method using backpropagation & gradient descent
+#DONE implement a trained method using backpropagation & gradient descent
 #train our network with some dummy dataset
 # make some predictions
  
@@ -111,42 +112,78 @@ class MLP:
 			#print("Updated W{} {}".format(i,weights))
 
 
+	def train(self,inputs, targets, epochs, learning_rate):
+		#num of epochs tells us how many times we want to feed the whole dataset. to the NN
+		# higher num of epochs should improve the prediction accuracy
+		#epochs is an integer
+		for i in range(epochs):
+			sum_error = 0
+
+			#Now, go through all inputs and targets one by one, unpacking idx
+			for input, target in zip(inputs, targets):
+
+				#forward propagation
+				output = self.forward_propagate(input)
+
+				#calculate the error
+				error = target - output
+
+				#back_propagation
+				self.back_propagate(error)
+
+				#apply gradient descent
+				self.gradient_descent(learning_rate)
+
+				#this should hopefully decrease over iterations
+				sum_error  += self._mse(target, output)
+
+			#report error, normalized by inputs
+			print("Error: {} at epoch {}".format(sum_error/ len(inputs), i))
+
+
+	def _mse(self, target, output):
+		return np.average((target-output)**2)
 
 
 	def _sigmoid_derivative(self, x):
-		y = x*(1.0 - x)
-		return y
+		return x*(1.0 - x)
 
 
 	def _sigmoid(self,x):
-		y  = 1.0 /(1.0 + np.exp(-x))
-		return y
+		return 1.0 /(1.0 + np.exp(-x))
 
 
 #main driver 
 if __name__ == "__main__":
 
 
+	#create a dataset to train a network for the sum operation
+	inputs = np.array([[random()/2 for _ in range(2)] for 
+		_ in range(1000)])  #array([[0.1, 0.2], [0.3, 0.4]])
+	targets = np.array([[i[0] + i[1]] for i in inputs])  #array([[0.3], [0.7])
 	#create an MLP using default values
 	mlp = MLP(2,[5],1)
 
 	#create some dummy inputs
-	input = np.array([0.1, 0.2])
-	target = np.array([0.3]) #sum of the above - let's see if n/w can learn sum operation
+	#input = np.array([0.1, 0.2])
+	#target = np.array([0.3]) #sum of the above - let's see if n/w can learn sum operation
 	#inputs = np.random.rand(mlp.num_inputs)
+
+	#train our mlp
+	mlp.train(inputs, targets, 50, 0.1)
 
 	#forward propagation
 	#outputs = mlp.forward_propagate(inputs)
-	output = mlp.forward_propagate(input) #rather the prediction
+	#output = mlp.forward_propagate(input) #rather the prediction
 
 	#calculate the error
-	error = target - output
+	#error = target - output
 
 	#back_propagation
-	mlp.back_propagate(error)
+	#mlp.back_propagate(error)
 
 	#apply gradient descent
-	mlp.gradient_descent(learning_rate=1)
+	#mlp.gradient_descent(learning_rate=1)
 
 
 	#print the results
