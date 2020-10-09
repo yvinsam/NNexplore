@@ -1,8 +1,8 @@
 import numpy as np
 
 #DONE: save activations and derivatives
-#implement backpropagation
-#implement gradient descent
+#DONE implement backpropagation
+#DONE implement gradient descent
 #implement a trained method using backpropagation & gradient descent
 #train our network with some dummy dataset
 # make some predictions
@@ -98,6 +98,20 @@ class MLP:
 		return error
 
 
+	def gradient_descent(self, learning_rate):
+		for i in range(len(self.weights)):
+			#retrieve weights and derivatives for the current layer
+			weights = self.weights[i]
+			#print("Original W{} {}".format(i,weights))
+
+			derivatives= self.derivatives[i]
+
+			#apply gradient descent 
+			weights += derivatives * learning_rate
+			#print("Updated W{} {}".format(i,weights))
+
+
+
 
 	def _sigmoid_derivative(self, x):
 		y = x*(1.0 - x)
@@ -129,7 +143,10 @@ if __name__ == "__main__":
 	error = target - output
 
 	#back_propagation
-	mlp.back_propagate(error, verbose=True)
+	mlp.back_propagate(error)
+
+	#apply gradient descent
+	mlp.gradient_descent(learning_rate=1)
 
 
 	#print the results
