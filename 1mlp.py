@@ -161,6 +161,7 @@ if __name__ == "__main__":
 	inputs = np.array([[random()/2 for _ in range(2)] for 
 		_ in range(1000)])  #array([[0.1, 0.2], [0.3, 0.4]])
 	targets = np.array([[i[0] + i[1]] for i in inputs])  #array([[0.3], [0.7])
+	
 	#create an MLP using default values
 	mlp = MLP(2,[5],1)
 
@@ -171,6 +172,15 @@ if __name__ == "__main__":
 
 	#train our mlp
 	mlp.train(inputs, targets, 50, 0.1)
+
+	#create a dummy data
+	input  = np.array([0.3, 0.1])
+	target = np.array([0.4]) #sum of these 2
+
+	output = mlp.forward_propagate(input)
+	print()
+	print()
+	print("Nivi! Our NN believes that {} + {} is equal to {} ".format(input[0], input[1], output[0]))
 
 	#forward propagation
 	#outputs = mlp.forward_propagate(inputs)
