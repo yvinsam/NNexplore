@@ -74,7 +74,7 @@ def save_mfcc(dataset_path, json_path,
 					#store mfcc for segment if it has the expected length 
 					if len(mfcc) == expected_num_mfcc_vectors_per_segment:
 						data["mfcc"].append(mfcc.tolist())
-						data["labels"].append(i-1) #first iteration is the dataset path, so we'll skip it and need i-1
+						data["labels"].append([i-2]) #first two iterations are the dataset + a hidden folder, so we'll skip it and take i-2
 						print("{}, segment:{}".format(file_path, s+1))
 
 	with open(json_path, "w") as fp:
