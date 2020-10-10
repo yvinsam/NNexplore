@@ -1,3 +1,10 @@
+'''
+Dataset: https://www.kaggle.com/andradaolteanu/gtzan-dataset-music-genre-classification
+
+Load in audio files, generate segments,  get mfcc, create labels and save json for training  
+
+@nsamudrala, Oct 2020
+'''
 import os
 import librosa
 import math
