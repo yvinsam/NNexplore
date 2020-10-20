@@ -1,5 +1,5 @@
 ### Hands-on exploration of DL + DSP concepts
-- This repo includes code that:
+- This repo includes code (switch to master branch)
         - explores fundamentals of neurons and neural networks by implementing MLP from scratch
         - understanding Tensorflow to replicate the above
         - basics of DSP/audio processing relevant for prepping datasets for deep learning, 
